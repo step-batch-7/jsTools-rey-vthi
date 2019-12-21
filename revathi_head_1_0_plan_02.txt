@@ -1,0 +1,96 @@
+When file has more than 10 lines
+>>node head.js a.txt -n 5
+1
+2
+3
+4
+5
+
+====================>>
+When file has less than 10lines
+node head.js a.txt 
+1
+2
+3
+4
+
+====================>>
+When file doesn't exist
+node head.js a.txt
+file Not exist
+
+====================>>
+Individual tasks
+====================>>
+[2.1] Last step
+
+output => text : headLines
+1
+2
+3
+4
+5
+input => array : listOfHeadLines
+['1','2','3','4','5']
+name : formatHeadLines
+
+====================>>
+[2.2a] The previous step
+
+output => array : listOfHeadLines
+['1','2','3','4','5']
+input : array : listOfAllLines,numOfLines
+['1','2','3','4','5','6','7','8','9','10','11','12','13','14']
+name: cutHeadLines
+
+[2.2b] The previous step
+output => array : listOfHeadLines
+['1','2','3','4']
+input: array : listOfAllLines,numOfLines
+['1','2','3','4']
+name: cutHeadLines
+
+====================>>
+
+[2.3] The previous step
+
+output => array : listOfAllLines
+['1','2','3','4','5','6','7','8','9','10','11','12','13','14']
+input : string: fileContent
+"1\n2\n2\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14"
+name : splitIntoList
+
+====================>>
+
+[2.4] The previous step
+
+output => string:fileContent
+"1\n2\n2\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14"
+input : reference,string,string,numOfLines
+fileReader,path,encoding
+fs.readFile,'./a.txt','utf8'
+name : readFileContent
+
+output: text : error msg
+"file does not exist"
+input : string:path,numOfLines
+name : readFileContent
+
+====================>>
+
+[2.5a] The previous step
+output => object :path,numOfLines
+a.txt
+input : array:cmdLineArgs
+['node','head.js', 'a.txt','-n','5']
+name : extractPath
+
+[2.5b] The previous step
+
+output: number:numOfLines
+5
+input: array:cmdLineArgs
+['node','head.js', 'a.txt','-n','5']
+name: extractCount
+
+====================>>

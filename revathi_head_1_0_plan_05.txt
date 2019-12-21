@@ -1,0 +1,100 @@
+head task:
+
+node head.js a.txt b.txt
+==> a.txt <==
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+==> b.txt <==
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+
+======================>
+Individual task:
+
+[5.0]the last task
+output:string:allFileHeadLine
+==> a.txt <==
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+==> b.txt <==
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+k
+
+input:array:filename,headLines
+filename:['a.txt','b.txt'],headLines:[ '1\n2\n3\n4\n5\n6\n7\n8\n9\n10', 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk' ]
+name:formatAllFileHeadLine
+
+======================>
+[5.1]The previous task
+output:string:headLines
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+input: array:fileContent
+["1","2","3","4","5","6","7","8","9","10","11","12"]
+name : getHeadLines
+
+======================>
+
+[5.2]The previous step
+output:array:fileContent
+["1","2","3","4","5","6","7","8","9","10","11","12"]
+input:filePath
+name : readFile
+
+======================>
+Note:[5.2] will be used for each file
+======================>
+[5.3]The previous step
+output:filePath
+['a.txt','b.txt']
+input : cmdLineArgs
+name :extractPath
+======================>
+
+
+
+

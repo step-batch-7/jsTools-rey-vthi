@@ -1,0 +1,80 @@
+head task:
+
+node head.js -n 6 a.txt b.txt
+==> a.txt <==
+1
+2
+3
+4
+5
+6
+
+==> b.txt <==
+a
+b
+c
+d
+e
+f
+
+======================>
+Individual task:
+
+[6.0]the last task
+output:string:allFileHeadLine
+==> a.txt <==
+1
+2
+3
+4
+5
+6
+
+==> b.txt <==
+a
+b
+c
+d
+f
+g
+
+input:array:filename,headLines
+filename:['a.txt','b.txt'],headLines:[ '1\n2\n3\n4\n5\n6', 'a\nb\nc\nd\ne\nf' ]
+name:formatAllFileHeadLine
+
+======================>
+[6.1]The previous task
+output:string:headLines
+1
+2
+3
+4
+5
+6
+input: array:fileContent,numberOfLine
+["1","2","3","4","5","6"]
+name : getHeadLines
+
+======================>
+
+[6.2]The previous step
+output:array:fileContent
+["1","2","3","4","5","6","7","8","9","10","11","12"]
+input:filePath
+name : readFile
+
+======================>
+Note:[6.2] will be used for each file
+======================>
+[6.3a]The previous step
+output:filePath
+['a.txt','b.txt']
+input : cmdLineArgs
+name :extractPath
+
+[6.3b]
+output:numberOfLine
+6
+input:cmdLineArgs
+name : getNumberOfLines
+======================>

@@ -1,0 +1,65 @@
+content in a.txt
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+========================>>
+
+>>when the data comes from standard input 
+cat a.txt | node head.js -n 6
+1
+2
+3
+4
+5
+6
+
+==========================>>
+[4.1] The last step 
+
+output => text : headLines
+1
+2
+3
+4
+5
+6
+
+input => array : listOfHeadLines
+['1','2','3','4','5','6']
+name : formatHeadLines
+==========================>>
+
+[4.2] The previous step
+output => array : listOfHeadLines
+['1','2','3','4','5','6']
+input : array : listOfAllLines,numOfLines
+['1','2','3','4','5','6','7','8','9','10','11']
+name :cutHeadLines
+
+==========================>>
+
+[4.3a] The previous step
+
+output => array : listOfAllLines
+['1','2','3','4','5','6','7','8','9','10','11']
+input : string: standardInput
+"1\n2\n2\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11"
+name : splitLines
+
+[4.3b] The previous step
+
+output: number:numOfLines
+6
+input: array:cmdLineArgs
+['node','head.js','-n','5']
+name: extractCount
+
+==========================>>
