@@ -1,11 +1,18 @@
 v.01)=> node head.js a.txt
 setUp:
-Directories : src,test
-Files : head.js, headLib,a.txt
+Directories : src-done
+              test-done
+Files : head.js-done
+        headLib-done
+        a.txt
 modules:chai
 
 tasks:
-getHeadLines, formatHeadLines,readFile,extractFileName, main
+getHeadLines-done
+formatHeadLines-done
+readFile
+extractFileName
+main
 
 
 

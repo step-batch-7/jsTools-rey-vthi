@@ -1,5 +1,6 @@
+const fs = require("fs");
 const assert = require("chai").assert;
-const { formatHeadLine, getHeadLines } = require("../src/headLib");
+const { formatHeadLine, getHeadLines, readFile } = require("../src/headLib");
 
 describe("head", function() {
   describe("formatHeadLine", function() {
@@ -22,6 +23,31 @@ describe("head", function() {
       const actual = getHeadLines(fileContent);
       const expected = "1\n2\n3\n4\n5\n6".split("\n");
       assert.deepStrictEqual(actual, expected);
+    });
+  });
+  describe("readFile", function() {
+    it("should load the content of the given file", function() {
+      const reader = function(path) {
+        assert.strictEqual(path, "a.txt");
+        return "successfully read";
+      };
+      const fileExists = function(fileName) {
+        assert.strictEqual(fileName, "a.txt");
+        return true;
+      };
+      const actual = readFile("a.txt", reader, fileExists);
+      assert.strictEqual(actual, "successfully read");
+    });
+    it("should throw an error, when the given does not exist file", function() {
+      const reader = function(path) {
+        assert.strictEqual(path, "a.txt");
+        return "successfully read";
+      };
+      const fileExists = function(fileName) {
+        assert.strictEqual(fileName, "a.txt");
+        return false;
+      };
+      assert.throws(() => readFile("a.txt", reader, fileExists), Error);
     });
   });
 });
