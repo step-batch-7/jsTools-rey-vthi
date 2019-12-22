@@ -1,94 +1,11 @@
-1=>
-node head.js a.txt
-output:
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
+v.01)=> node head.js a.txt
+setUp:
+Directories : src,test
+Files : head.js, headLib,a.txt
+modules:chai
 
-===========================>
+tasks:
+getHeadLines, formatHeadLines,readFile,extractFileName, main
 
 
-2=>
-node head.js a.txt -n 5
-output:
-1
-2
-3
-4
-5
-
-===========================>
-
-3=>
-cat a.txt | node head.js
-output:
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-
-===========================>
-
-4=>
-cat a.txt | node head.js -n 6
-output:
-1
-2
-3
-4
-5
-6
-
-===========================>
-
-5=>
-node head.js a.txt b.txt
-output:
-==> a.txt <==
-1
-2
-3
-4
-5
-
-==> b.txt <==
-a
-b
-c
-d
-e
-
-===========================>
-
-6=>
-node head.js -n 6 a.txt b.txt
-output:
-==> a.txt <==
-1
-2
-3
-4
-5
-6
-
-==> b.txt <==
-a
-b
-c
-d
-e
-f
 

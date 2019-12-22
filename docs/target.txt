@@ -1,0 +1,6 @@
+1) node head.js a.txt
+2) node head.js a.txt -n 5
+3) cat a.txt | node head.js
+4) cat a.txt | node head.js -n 6
+5) node head.js a.txt b.txt
+6) node head.js -n 6 a.txt b.txt
