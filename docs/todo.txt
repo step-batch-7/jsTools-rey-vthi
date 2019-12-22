@@ -10,7 +10,7 @@ modules:chai
 tasks:
 getHeadLines-done
 formatHeadLines-done
-readFile
+readFile-done
 extractFileName
 main
 

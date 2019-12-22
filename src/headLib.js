@@ -10,5 +10,7 @@ const readFile = function(path, reader, fileExists) {
   if (fileExists(path)) return reader(path);
   throw new Error("head: No such a file or directory");
 };
-
-module.exports = { formatHeadLine, getHeadLines, readFile };
+const extractFileName = function(usrArgs) {
+  return { fileName: usrArgs.slice(2) };
+};
+module.exports = { formatHeadLine, getHeadLines, readFile, extractFileName };

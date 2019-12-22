@@ -1,6 +1,11 @@
 const fs = require("fs");
 const assert = require("chai").assert;
-const { formatHeadLine, getHeadLines, readFile } = require("../src/headLib");
+const {
+  formatHeadLine,
+  getHeadLines,
+  readFile,
+  extractFileName
+} = require("../src/headLib");
 
 describe("head", function() {
   describe("formatHeadLine", function() {
@@ -48,6 +53,13 @@ describe("head", function() {
         return false;
       };
       assert.throws(() => readFile("a.txt", reader, fileExists), Error);
+    });
+  });
+  describe("extractFileName", function() {
+    it("should extract fileName from the command Line args", function() {
+      const usrArgs = ["node", "head.js", "a.txt"];
+      const actual = extractFileName(usrArgs);
+      assert.deepStrictEqual(actual, { fileName: ["a.txt"] });
     });
   });
 });
