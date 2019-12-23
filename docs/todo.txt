@@ -15,5 +15,9 @@ readFile-done
 extractFileName-done
 head.js-done
 
+v.02)node head.js -n 5 a.txt
+renamed extractFileName - extractFileAndCount-done
+renamed extractFileAndCount to parseArgs-done
+
 
 

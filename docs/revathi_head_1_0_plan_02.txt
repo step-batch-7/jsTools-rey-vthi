@@ -17,7 +17,7 @@ node head.js a.txt
 ====================>>
 When file doesn't exist
 node head.js a.txt
-file Not exist
+head: No such directory or file
 
 ====================>>
 Individual tasks
@@ -82,7 +82,7 @@ name : readFileContent
 output => object :path,numOfLines
 a.txt
 input : array:cmdLineArgs
-['node','head.js', 'a.txt','-n','5']
+['node','head.js', '-n','5','a.txt',]
 name : extractPath
 
 [2.5b] The previous step
@@ -90,7 +90,7 @@ name : extractPath
 output: number:numOfLines
 5
 input: array:cmdLineArgs
-['node','head.js', 'a.txt','-n','5']
+['node','head.js','-n','5', 'a.txt']
 name: extractCount
 
 ====================>>
