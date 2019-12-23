@@ -1,4 +1,3 @@
-const fs = require("fs");
 const assert = require("chai").assert;
 const {
   formatHeadLine,
@@ -40,7 +39,8 @@ describe("head", function() {
         assert.strictEqual(fileName, "a.txt");
         return true;
       };
-      const actual = readFile("a.txt", reader, fileExists);
+      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
+      const actual = readFile("a.txt", fs);
       assert.strictEqual(actual, "successfully read");
     });
     it("should throw an error, when the given does not exist file", function() {
@@ -52,7 +52,9 @@ describe("head", function() {
         assert.strictEqual(fileName, "a.txt");
         return false;
       };
-      assert.throws(() => readFile("a.txt", reader, fileExists), Error);
+      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
+      const expected = "head : No such a file or directory";
+      assert.strictEqual(readFile("a.txt", fs), expected);
     });
   });
   describe("extractFileName", function() {

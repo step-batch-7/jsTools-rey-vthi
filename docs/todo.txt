@@ -4,15 +4,16 @@ Directories : src-done
               test-done
 Files : head.js-done
         headLib-done
-        a.txt
-modules:chai
+        config.js-done
+        a.txt-done 
+modules:chai-done
 
 tasks:
 getHeadLines-done
 formatHeadLines-done
 readFile-done
-extractFileName
-main
+extractFileName-done
+head.js-done
 
 
 
