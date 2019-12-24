@@ -1,0 +1,23 @@
+{
+  "name": "jstools-rey-vthi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "head.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/step-batch-7/jsTools-rey-vthi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/step-batch-7/jsTools-rey-vthi/issues"
+  },
+  "homepage": "https://github.com/step-batch-7/jsTools-rey-vthi#readme"
+}
