@@ -1,0 +1,7 @@
+node head.js -n 6 ./appTests/moreThan_10_lines.txt
+1
+2
+3
+4
+5
+6
