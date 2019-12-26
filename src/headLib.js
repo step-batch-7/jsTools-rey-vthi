@@ -1,45 +1,45 @@
+const EMPTY_STRING = "";
 const getHeadLines = function(fileContent, count) {
   const listOfLines = fileContent.split("\n");
   return listOfLines.slice(0, count).join("\n");
 };
 
 const readFile = function(path, fs) {
-  if (!fs.existsSync(path))
-    return { err: `head : ${path} No such file or directory`, content: "" };
-  return { content: fs.readFileSync(path, "utf8"), err: "" };
-};
-
-const validateNumber = function(index, args, argsInfo) {
-  const usrNumber = +args[index];
-  Number.isInteger(usrNumber)
-    ? (argsInfo.count = usrNumber)
-    : (argsInfo.isValidOption = false);
-  return argsInfo;
+  let content = EMPTY_STRING;
+  let err = EMPTY_STRING;
+  const isFilePresent = fs.existsSync(path);
+  if (isFilePresent) content = fs.readFileSync(path, "utf8");
+  else err = `head : ${path} No such file or directory`;
+  return { err, content };
 };
 
 const parseArgs = function(args) {
-  const parsedArgs = { count: 10, isValidOption: true };
-  let updatedArgs = parsedArgs;
+  let parsedArgs = { count: 10 };
   let index = 0;
+
   while (index < args.length) {
     if (args[index] === "-n") {
-      updatedArgs = validateNumber(index + 1, args, parsedArgs);
+      const usrCount = +args[index + 1];
+      if (Number.isInteger(usrCount) && usrCount >= 1)
+        parsedArgs.count = usrCount;
+      else parsedArgs.err = `head: illegal line count -- ${args[index + 1]}`;
       index = index + 2;
     } else {
-      updatedArgs.files = args[index];
+      parsedArgs.files = args[index];
       index++;
     }
   }
-  if (updatedArgs.isValidOption) return updatedArgs;
-  throw Error(`head: illegal line count`);
+
+  return parsedArgs;
 };
 
 const performHead = function(usrArgs, fs) {
   const parsedArgs = parseArgs(usrArgs);
-  const fileContent = readFile(parsedArgs.files, fs);
-  if (fileContent.err != "") return fileContent;
-  const headLines = getHeadLines(fileContent.content, parsedArgs.count);
-  return { err: "", content: headLines };
+  if (parsedArgs.err) return { content: EMPTY_STRING, err: parsedArgs.err };
+  const { err, content } = readFile(parsedArgs.files, fs);
+  if (err) return { content: EMPTY_STRING, err };
+  const headLines = getHeadLines(content, parsedArgs.count);
+  return { content: headLines, err: EMPTY_STRING };
 };
 
 module.exports = {

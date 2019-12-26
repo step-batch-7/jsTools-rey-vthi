@@ -103,8 +103,7 @@ describe("head", function() {
       const actual = parseArgs(usrArgs, fs);
       const expected = {
         files: "existingFile.txt",
-        count: 7,
-        isValidOption: true
+        count: 7
       };
       assert.deepStrictEqual(actual, expected);
     });
@@ -122,8 +121,7 @@ describe("head", function() {
       const actual = parseArgs(usrArgs, fs);
       const expected = {
         files: "existingFile.txt",
-        count: 10,
-        isValidOption: true
+        count: 10
       };
       assert.deepStrictEqual(actual, expected);
     });
@@ -141,13 +139,12 @@ describe("head", function() {
       const actual = parseArgs(usrArgs, fs);
       const expected = {
         files: "existingFile.txt",
-        count: 10,
-        isValidOption: true
+        count: 10
       };
       assert.deepStrictEqual(actual, expected);
     });
-    it("should throw error, when user option i invalid", function() {
-      const usrArgs = ["-n", "d", "badFile.txt"];
+    it("should throw error, when user option invalid", function() {
+      const usrArgs = ["-n", "d", "existingFile.txt"];
       const reader = function(path) {
         assert.strictEqual(path, "badFile.txt");
         return `head: ${path}No such file or directory`;
@@ -157,7 +154,13 @@ describe("head", function() {
         return false;
       };
       fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
-      assert.throws(() => parseArgs(usrArgs, fs), Error);
+      const actual = parseArgs(usrArgs);
+      const expected = {
+        files: "existingFile.txt",
+        count: 10,
+        err: `head: illegal line count -- d`
+      };
+      assert.deepStrictEqual(actual, expected);
     });
   });
 });

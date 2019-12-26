@@ -1,0 +1,2 @@
+node head.js -n r a.txt
+head: illegal line count -- r
