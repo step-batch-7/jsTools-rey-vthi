@@ -135,34 +135,5 @@ describe("head", function() {
       };
       assert.deepStrictEqual(actual, expected);
     });
-    it("should update the count when the count is adjacent to the option", function() {
-      const usrArgs = ["-n5", "existingFile.txt"];
-      const actual = parseArgs(usrArgs);
-      const expected = {
-        files: "existingFile.txt",
-        count: 5
-      };
-      assert.deepStrictEqual(actual, expected);
-    });
-    it("should give illegal count error message", function() {
-      const usrArgs = ["-nd", "existingFile.txt"];
-      const actual = parseArgs(usrArgs);
-      const expected = {
-        files: "existingFile.txt",
-        count: 10,
-        err: "head: illegal line count -- d"
-      };
-      assert.deepStrictEqual(actual, expected);
-    });
-    it("should give illegal option error message", function() {
-      const usrArgs = ["-s4", "existingFile.txt"];
-      const actual = parseArgs(usrArgs);
-      const expected = {
-        files: "existingFile.txt",
-        count: 10,
-        err: `head: illegal option -- s\nusage: head [-n lines | -c bytes] [file ...]`
-      };
-      assert.deepStrictEqual(actual, expected);
-    });
   });
 });
