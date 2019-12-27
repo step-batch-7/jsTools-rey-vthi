@@ -87,20 +87,20 @@ describe("head", function() {
       };
       assert.deepStrictEqual(actual, expected);
     });
+    it("should give the error, when the userCount is invalid", function() {
+      fs = {};
+      const actual = performHead(["-n", "f", "existingFile.txt"], fs);
+      const expected = {
+        err: `head: illegal line count -- f`,
+        content: ""
+      };
+      assert.deepStrictEqual(actual, expected);
+    });
   });
   describe("parseArgs", function() {
     it("should update the status of the given user Option", function() {
       const usrArgs = ["-n", "7", "existingFile.txt"];
-      const reader = function(path) {
-        assert.strictEqual(path, "existingFile.txt");
-        return `head: ${path}No such file or directory`;
-      };
-      const fileExists = function(fileName) {
-        assert.strictEqual(fileName, "existingFile.txt");
-        return true;
-      };
-      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
-      const actual = parseArgs(usrArgs, fs);
+      const actual = parseArgs(usrArgs);
       const expected = {
         files: "existingFile.txt",
         count: 7
@@ -109,16 +109,7 @@ describe("head", function() {
     });
     it("should give the default count,when the user has not count", function() {
       const usrArgs = ["existingFile.txt"];
-      const reader = function(path) {
-        assert.strictEqual(path, "existingFile.txt");
-        return `head: ${path}No such file or directory`;
-      };
-      const fileExists = function(fileName) {
-        assert.strictEqual(fileName, "existingFile.txt");
-        return true;
-      };
-      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
-      const actual = parseArgs(usrArgs, fs);
+      const actual = parseArgs(usrArgs);
       const expected = {
         files: "existingFile.txt",
         count: 10
@@ -127,38 +118,49 @@ describe("head", function() {
     });
     it("should give the default count,when the user has not count", function() {
       const usrArgs = ["existingFile.txt"];
-      const reader = function(path) {
-        assert.strictEqual(path, "existingFile.txt");
-        return `head: ${path}No such file or directory`;
-      };
-      const fileExists = function(fileName) {
-        assert.strictEqual(fileName, "existingFile.txt");
-        return true;
-      };
-      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
-      const actual = parseArgs(usrArgs, fs);
+      const actual = parseArgs(usrArgs);
       const expected = {
         files: "existingFile.txt",
         count: 10
       };
       assert.deepStrictEqual(actual, expected);
     });
-    it("should throw error, when user option invalid", function() {
+    it("should throw error, when user option in", function() {
       const usrArgs = ["-n", "d", "existingFile.txt"];
-      const reader = function(path) {
-        assert.strictEqual(path, "badFile.txt");
-        return `head: ${path}No such file or directory`;
-      };
-      const fileExists = function(fileName) {
-        assert.strictEqual(fileName, "badFile.txt");
-        return false;
-      };
-      fs = { readFile: reader, fileExists: fileExists, encoding: "utf8" };
       const actual = parseArgs(usrArgs);
       const expected = {
         files: "existingFile.txt",
         count: 10,
         err: `head: illegal line count -- d`
+      };
+      assert.deepStrictEqual(actual, expected);
+    });
+    it("should update the count when the count is adjacent to the option", function() {
+      const usrArgs = ["-n5", "existingFile.txt"];
+      const actual = parseArgs(usrArgs);
+      const expected = {
+        files: "existingFile.txt",
+        count: 5
+      };
+      assert.deepStrictEqual(actual, expected);
+    });
+    it("should give illegal count error message", function() {
+      const usrArgs = ["-nd", "existingFile.txt"];
+      const actual = parseArgs(usrArgs);
+      const expected = {
+        files: "existingFile.txt",
+        count: 10,
+        err: "head: illegal line count -- d"
+      };
+      assert.deepStrictEqual(actual, expected);
+    });
+    it("should give illegal option error message", function() {
+      const usrArgs = ["-s4", "existingFile.txt"];
+      const actual = parseArgs(usrArgs);
+      const expected = {
+        files: "existingFile.txt",
+        count: 10,
+        err: `head: illegal option -- s\nusage: head [-n lines | -c bytes] [file ...]`
       };
       assert.deepStrictEqual(actual, expected);
     });
