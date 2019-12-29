@@ -14,6 +14,11 @@ readFile-done
 performHead-done
 head.js-done
 
+v.02)node node -n 6 head.js a.txt
+parseArgs - done
+
+v.03)cat a.txt | node head.js
+getStdIn
 
 
 

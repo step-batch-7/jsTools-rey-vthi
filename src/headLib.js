@@ -1,51 +1,60 @@
-const EMPTY_STRING = "";
+const EMPTY_STRING = '';
 
 const getHeadLines = function(fileContent, count) {
-  const listOfLines = fileContent.split("\n");
-  return listOfLines.slice(0, count).join("\n");
+  const from = 0;
+  const listOfLines = fileContent.split('\n');
+  return listOfLines.slice(from, count).join('\n');
 };
 
-const readFile = function(path, fs) {
-  let content = EMPTY_STRING;
-  let err = EMPTY_STRING;
-  const isFilePresent = fs.existsSync(path);
-  if (isFilePresent) content = fs.readFileSync(path, "utf8");
-  else err = `head : ${path} No such file or directory`;
-  return { err, content };
+const fileErrors = { ENOENT: 'head: No such file or directory' };
+
+const respondedWithContent = function(count, displayResult, content) {
+  const headLines = getHeadLines(content, count);
+  displayResult({ err: '', content: headLines });
+};
+
+const respondedWithError = function(displayResult, err) {
+  displayResult({ err: fileErrors[err.code], content: '' });
+};
+
+const readFile = function(parsedArgs, createReadStream, displayResult) {
+  const reader = createReadStream(parsedArgs.file);
+  reader.setEncoding('utf8');
+  reader.on(
+    'data',
+    respondedWithContent.bind(null, parsedArgs.count, displayResult)
+  );
+  reader.on('error', respondedWithError.bind(null, displayResult));
+};
+
+const isValidCount = function(count) {
+  return Number.isInteger(+count);
 };
 
 const parseArgs = function(args) {
-  let parsedArgs = { count: 10 };
-  let index = 0;
-
-  while (index < args.length) {
-    if (args[index] === "-n") {
-      const usrCount = +args[index + 1];
-      if (Number.isInteger(usrCount) && usrCount >= 1)
-        parsedArgs.count = usrCount;
-      else parsedArgs.err = `head: illegal line count -- ${args[index + 1]}`;
-      index = index + 2;
-    } else {
-      parsedArgs.files = args[index];
-      index++;
+  const parsedArgs = { count: 10 };
+  const step = 1;
+  if (args.includes('-n')) {
+    const option = args.indexOf('-n');
+    parsedArgs.count = +args[option + step];
+    if (!isValidCount(parsedArgs.count)) {
+      parsedArgs.err = `head: illegal line count -- ${args[option + step]}`;
     }
   }
-
+  parsedArgs.file = args[args.length - step];
   return parsedArgs;
 };
 
-const performHead = function(usrArgs, fs) {
+const performHead = function(usrArgs, readStream, displayResult) {
   const parsedArgs = parseArgs(usrArgs);
-  if (parsedArgs.err) return { content: EMPTY_STRING, err: parsedArgs.err };
-  const { err, content } = readFile(parsedArgs.files, fs);
-  if (err) return { content: EMPTY_STRING, err };
-  const headLines = getHeadLines(content, parsedArgs.count);
-  return { content: headLines, err: EMPTY_STRING };
+  if (parsedArgs.err) {
+    return displayResult({ content: EMPTY_STRING, err: parsedArgs.err });
+  }
+  readFile(parsedArgs, readStream, displayResult);
 };
 
 module.exports = {
   performHead,
   getHeadLines,
-  readFile,
   parseArgs
 };
