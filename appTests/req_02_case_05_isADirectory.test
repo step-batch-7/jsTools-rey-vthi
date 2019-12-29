@@ -1,0 +1,2 @@
+node head.js ./appTests/a_directory
+head: Is a directory
