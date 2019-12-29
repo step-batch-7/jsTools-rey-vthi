@@ -1,4 +1,4 @@
-const { stdout, stderr } = process;
+const { stdin, stderr, stdout } = process;
 const { createReadStream } = require('fs');
 const { performHead } = require('./src/headLib');
 
@@ -8,6 +8,7 @@ const main = function() {
     stdout.write(result.content);
     stderr.write(result.err);
   };
-  performHead(process.argv.slice(usrArgsFrom), createReadStream, displayResult);
+  const inputStream = { createReadStream, stdin };
+  performHead(process.argv.slice(usrArgsFrom), inputStream, displayResult);
 };
 main();

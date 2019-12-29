@@ -21,8 +21,7 @@ const respondedWithError = function(displayResult, err) {
   displayResult({ err: fileErrors[err.code], content: '' });
 };
 
-const readStreamLines = function(args, createReadStream, displayResult) {
-  const reader = createReadStream(args.file);
+const readStreamLines = function(args, reader, displayResult) {
   reader.setEncoding('utf8');
   reader.on('data', respondedWithContent.bind(null, args.count, displayResult));
   reader.on('error', respondedWithError.bind(null, displayResult));
@@ -46,12 +45,21 @@ const parseArgs = function(args) {
   return parsedArgs;
 };
 
-const performHead = function(usrArgs, readStream, displayResult) {
+const pickStream = function(file, createReadStream, stdin) {
+  return file ? createReadStream(file) : stdin;
+};
+
+const performHead = function(
+  usrArgs,
+  { createReadStream, stdin },
+  displayResult
+) {
   const parsedArgs = parseArgs(usrArgs);
   if (parsedArgs.err) {
     return displayResult({ content: EMPTY_STRING, err: parsedArgs.err });
   }
-  readStreamLines(parsedArgs, readStream, displayResult);
+  const inputStream = pickStream(parsedArgs.file, createReadStream, stdin);
+  readStreamLines(parsedArgs, inputStream, displayResult);
 };
 
 module.exports = {
