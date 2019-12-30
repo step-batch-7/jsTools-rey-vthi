@@ -46,7 +46,7 @@ describe('head', function() {
     it('should throw error, when user option in', function() {
       const usrArgs = ['-n', 'd', 'existingFile.txt'];
       const count = NaN;
-      const err = `head: illegal line count -- d`;
+      const err = 'head: illegal line count -- d';
       const actual = parseArgs(usrArgs);
       const expected = { file: 'existingFile.txt', count, err };
       assert.deepStrictEqual(actual, expected);

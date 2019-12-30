@@ -8,7 +8,7 @@ const getHeadLines = function(fileContent, count) {
 
 const respondedWithContent = function(count, displayResult, content) {
   const headLines = getHeadLines(content, count);
-  displayResult({ err: '', content: headLines });
+  displayResult({ err: EMPTY_STRING, content: headLines });
 };
 
 const fileErrors = {
@@ -18,7 +18,7 @@ const fileErrors = {
 };
 
 const respondedWithError = function(displayResult, err) {
-  displayResult({ err: fileErrors[err.code], content: '' });
+  displayResult({ err: fileErrors[err.code], content: EMPTY_STRING });
 };
 
 const readStreamLines = function(args, reader, displayResult) {
