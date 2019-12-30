@@ -49,11 +49,8 @@ const pickStream = function(file, createReadStream, stdin) {
   return file ? createReadStream(file) : stdin;
 };
 
-const performHead = function(
-  usrArgs,
-  { createReadStream, stdin },
-  displayResult
-) {
+const performHead = function(usrArgs, inputStreams, displayResult) {
+  const { createReadStream, stdin } = inputStreams;
   const parsedArgs = parseArgs(usrArgs);
   if (parsedArgs.err) {
     return displayResult({ content: EMPTY_STRING, err: parsedArgs.err });
