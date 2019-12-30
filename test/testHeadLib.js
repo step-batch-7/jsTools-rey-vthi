@@ -5,14 +5,14 @@ const { getHeadLines, parseArgs, performHead } = require('../src/headLib');
 
 describe('head', function() {
   describe('getHeadLines', function() {
-    it('should get headLines of given data,where number of lines given is > 10lines', function() {
+    it('should getHeadLines, where given data has > 10 lines', function() {
       const fileContent = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13';
       const count = 10;
       const actual = getHeadLines(fileContent, count);
       const expected = '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
       assert.deepStrictEqual(actual, expected);
     });
-    it('should get the head lines from the file,when the file has less than 10Lines', function() {
+    it('should getHeadLines, where given data has < 10 lines', function() {
       const fileContent = '1\n2\n3\n4\n5\n6';
       const count = 10;
       const actual = getHeadLines(fileContent, count);
@@ -53,7 +53,7 @@ describe('head', function() {
     });
   });
   describe('performHead', function() {
-    it('should getHeadLines of the specified file,where it has more than 10lines', function() {
+    it('should getHeadLines, where the file has more than 10lines', function() {
       const usrArgs = ['a.txt'];
       const displayResult = sinon.stub();
       const eventEmitter = new EventEmitter();
@@ -65,7 +65,7 @@ describe('head', function() {
       const result = { err: '', content: '1\n2\n3\n4\n5\n6\n7\n8\n9\n10' };
       assert.ok(displayResult.calledOnceWithExactly(result));
     });
-    it('should getHeadLines of the specified file,where it has less than 10lines', function() {
+    it('should getHeadLines, where the file has less than 10lines', function() {
       const usrArgs = ['a.txt'];
       const displayResult = sinon.stub();
       const eventEmitter = new EventEmitter();
@@ -77,7 +77,7 @@ describe('head', function() {
       const result = { err: '', content: '1\n2\n3\n4\n5\n6\n7\n8' };
       assert.ok(displayResult.calledOnceWithExactly(result));
     });
-    it('should getHeadLines of the specified file for the given count', function() {
+    it('should getHeadLines of the file for the given count', function() {
       const usrArgs = ['-n', '6', 'a.txt'];
       const displayResult = sinon.stub();
       const eventEmitter = new EventEmitter();
