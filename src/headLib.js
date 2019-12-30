@@ -6,9 +6,9 @@ const getHeadLines = function(fileContent, count) {
   return listOfLines.slice(from, count).join('\n');
 };
 
-const respondedWithContent = function(count, displayResult, content) {
+const respondedWithContent = function(count, onComplete, content) {
   const headLines = getHeadLines(content, count);
-  displayResult({ err: EMPTY_STRING, content: headLines });
+  onComplete({ err: EMPTY_STRING, content: headLines });
 };
 
 const fileErrors = {
@@ -17,14 +17,17 @@ const fileErrors = {
   EISDIR: 'head: Is a directory'
 };
 
-const respondedWithError = function(displayResult, err) {
-  displayResult({ err: fileErrors[err.code], content: EMPTY_STRING });
+const respondedWithError = function(onComplete, err) {
+  onComplete({ err: fileErrors[err.code], content: EMPTY_STRING });
 };
 
-const readStreamLines = function(args, reader, displayResult) {
+const readStreamLines = function(args, reader, onComplete) {
+  let content = EMPTY_STRING;
+  const count = args.count;
   reader.setEncoding('utf8');
-  reader.on('data', respondedWithContent.bind(null, args.count, displayResult));
-  reader.on('error', respondedWithError.bind(null, displayResult));
+  reader.on('data', data => { content = content + data;});
+  reader.on('end', () => respondedWithContent(count, onComplete, content));
+  reader.on('error', respondedWithError.bind(null, onComplete));
 };
 
 const isValidCount = function(count) {
@@ -49,14 +52,14 @@ const pickStream = function(file, createReadStream, stdin) {
   return file ? createReadStream(file) : stdin;
 };
 
-const performHead = function(usrArgs, inputStreams, displayResult) {
+const performHead = function(usrArgs, inputStreams, onComplete) {
   const { createReadStream, stdin } = inputStreams;
   const parsedArgs = parseArgs(usrArgs);
   if (parsedArgs.err) {
-    return displayResult({ content: EMPTY_STRING, err: parsedArgs.err });
+    return onComplete({ content: EMPTY_STRING, err: parsedArgs.err });
   }
   const inputStream = pickStream(parsedArgs.file, createReadStream, stdin);
-  readStreamLines(parsedArgs, inputStream, displayResult);
+  readStreamLines(parsedArgs, inputStream, onComplete);
 };
 
 module.exports = {
