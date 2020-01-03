@@ -6,32 +6,14 @@ const getHeadLines = function(fileContent, count) {
   return listOfLines.slice(from, count).join('\n');
 };
 
-const respondedWithContent = function(count, onComplete, content) {
-  const headLines = getHeadLines(content, count);
-  onComplete({ err: EMPTY_STRING, content: headLines });
-};
-
-const fileErrors = {
+const FILE_ERRORS = {
   ENOENT: 'head: No such file or directory',
   EACCES: 'head: Permission denied',
   EISDIR: 'head: Is a directory'
 };
 
-const respondedWithError = function(onComplete, err) {
-  onComplete({ err: fileErrors[err.code], content: EMPTY_STRING });
-};
-
-const readStreamLines = function(args, reader, onComplete) {
-  let content = EMPTY_STRING;
-  const count = args.count;
-  reader.setEncoding('utf8');
-  reader.on('data', data => { content = content + data;});
-  reader.on('end', () => respondedWithContent(count, onComplete, content));
-  reader.on('error', respondedWithError.bind(null, onComplete));
-};
-
 const isValidCount = function(count) {
-  return Number.isInteger(+count);
+  return Number.isInteger(+count) && +count > 0;
 };
 
 const parseArgs = function(args) {
@@ -49,7 +31,7 @@ const parseArgs = function(args) {
 };
 
 const pickStream = function(file, createReadStream, stdin) {
-  return file ? createReadStream(file) : stdin;
+  return file?createReadStream(file): stdin;
 };
 
 const performHead = function(usrArgs, inputStreams, onComplete) {
@@ -59,11 +41,27 @@ const performHead = function(usrArgs, inputStreams, onComplete) {
     return onComplete({ content: EMPTY_STRING, err: parsedArgs.err });
   }
   const inputStream = pickStream(parsedArgs.file, createReadStream, stdin);
-  readStreamLines(parsedArgs, inputStream, onComplete);
+  readStreamLines(inputStream, parsedArgs.count, onComplete);
 };
 
-module.exports = {
-  performHead,
-  getHeadLines,
-  parseArgs
+
+const readStreamLines = function(reader, count, onComplete) {
+  const content = EMPTY_STRING;
+  let headLinesLeft = count;
+  const onData =(chunk) => {
+    const currentChunkLineCount = chunk.trim().split('\n').length;
+    onComplete({content: getHeadLines(chunk, headLinesLeft), err: ''});
+    headLinesLeft=headLinesLeft-currentChunkLineCount;
+    if(headLinesLeft <= 0){
+      reader.destroy();
+    }
+  };
+  const onError = error => onComplete({err: FILE_ERRORS[error.code], content});
+
+  reader.setEncoding('utf8');
+  reader.on('data', onData);
+  reader.on('error', onError);
 };
+
+
+module.exports = performHead;
