@@ -58,7 +58,6 @@ const readStreamLines = function(reader, count, onComplete) {
     }
   };
   const onError = error => onComplete({err: FILE_ERRORS[error.code], content});
-  
 
   reader.setEncoding('utf8');
   reader.on('data', onData);
