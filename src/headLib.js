@@ -13,7 +13,8 @@ const FILE_ERRORS = {
 };
 
 const isValidCount = function(count) {
-  return Number.isInteger(+count) && +count > 0;
+  const zero = 0;
+  return Number.isInteger(+count) && +count > zero;
 };
 
 const parseArgs = function(args) {
@@ -34,8 +35,7 @@ const pickStream = function(file, createReadStream, stdin) {
   return file?createReadStream(file): stdin;
 };
 
-const performHead = function(usrArgs, inputStreams, onComplete) {
-  const { createReadStream, stdin } = inputStreams;
+const performHead = function(usrArgs, createReadStream, stdin, onComplete) {
   const parsedArgs = parseArgs(usrArgs);
   if (parsedArgs.err) {
     return onComplete({ content: EMPTY_STRING, err: parsedArgs.err });
@@ -47,16 +47,18 @@ const performHead = function(usrArgs, inputStreams, onComplete) {
 
 const readStreamLines = function(reader, count, onComplete) {
   const content = EMPTY_STRING;
+  const noLines = 0;
   let headLinesLeft = count;
   const onData =(chunk) => {
     const currentChunkLineCount = chunk.trim().split('\n').length;
     onComplete({content: getHeadLines(chunk, headLinesLeft), err: ''});
     headLinesLeft=headLinesLeft-currentChunkLineCount;
-    if(headLinesLeft <= 0){
+    if(headLinesLeft <= noLines){
       reader.destroy();
     }
   };
   const onError = error => onComplete({err: FILE_ERRORS[error.code], content});
+  
 
   reader.setEncoding('utf8');
   reader.on('data', onData);

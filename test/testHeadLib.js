@@ -12,7 +12,7 @@ describe('head', function() {
       };
       const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
       const createReadStream = sinon.fake.returns(readStream);
-      performHead(['a.txt'], { createReadStream }, onComplete);
+      performHead(['a.txt'], createReadStream, '', onComplete);
       assert(readStream.setEncoding.calledWith('utf8'));
       assert.strictEqual(readStream.on.firstCall.args[0], 'data');
       assert.strictEqual(readStream.on.secondCall.args[0], 'error');
@@ -29,7 +29,7 @@ describe('head', function() {
       };
       const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
       const createReadStream = sinon.fake.returns(readStream);
-      performHead(['a.txt'], { createReadStream }, onComplete);
+      performHead(['a.txt'], createReadStream, '', onComplete);
       assert(readStream.setEncoding.calledWith('utf8'));
       assert.strictEqual(readStream.on.firstCall.args[0], 'data');
       assert.strictEqual(readStream.on.secondCall.args[0], 'error');
@@ -46,7 +46,7 @@ describe('head', function() {
       };
       const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
       const createReadStream = sinon.fake.returns(readStream);
-      performHead(usrArgs, { createReadStream }, onComplete);
+      performHead(usrArgs, createReadStream, '', onComplete);
       assert(readStream.setEncoding.calledWith('utf8'));
       assert.strictEqual(readStream.on.firstCall.args[0], 'data');
       assert.strictEqual(readStream.on.secondCall.args[0], 'error');
@@ -63,7 +63,7 @@ describe('head', function() {
       };
       const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
       const createReadStream = sinon.fake.returns(readStream);
-      performHead(usrArgs, { createReadStream }, onComplete);
+      performHead(usrArgs, createReadStream, '', onComplete);
       assert(readStream.setEncoding.calledWith('utf8'));
       assert.strictEqual(readStream.on.firstCall.args[0], 'data');
       assert.strictEqual(readStream.on.secondCall.args[0], 'error');
@@ -73,7 +73,7 @@ describe('head', function() {
     it('should give the error, when the given count is invalid', function() {
       const usrArgs = ['-n', 'r', 'a.txt'];
       const onComplete = sinon.stub();
-      performHead(usrArgs, '', onComplete);
+      performHead(usrArgs, '', '', onComplete);
       const result = { err: 'head: illegal line count -- r', content: '' };
       assert.ok(onComplete.calledOnceWithExactly(result));
     });
@@ -84,7 +84,7 @@ describe('head', function() {
         assert.strictEqual(result.err, '');
         done();
       };
-      performHead([], { createReadStream: '', stdin }, onComplete);
+      performHead([], '', stdin, onComplete);
       assert(stdin.setEncoding.calledWith('utf8'));
       assert.strictEqual(stdin.on.firstCall.args[0], 'data');
       assert.strictEqual(stdin.on.secondCall.args[0], 'error');
@@ -99,7 +99,7 @@ describe('head', function() {
         assert.strictEqual(result.err, '');
         done();
       };
-      performHead([], { createReadStream: '', stdin }, onComplete);
+      performHead([], '', stdin, onComplete);
       assert(stdin.setEncoding.calledWith('utf8'));
       assert.strictEqual(stdin.on.firstCall.args[0], 'data');
       assert.strictEqual(stdin.on.secondCall.args[0], 'error');
